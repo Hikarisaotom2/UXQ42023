@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hola! </title>
+        <!-- Maneras de importar css al archivo
+    1)Aninado 
+    2) Importandolo 
+    3)In line 
+-->
+    <link rel="stylesheet" href="estilo.css" type="text/css"> <!-- CSS importado -->
+
+    <style> 
+    /* CSS Anidado */
+        #H1Distinto {
+            color: blueviolet;
+            font-size: 64px;
+        }
+
+        .inputsEntrada {
+            color: blue;
+            font-size: xx-large;
+        }
+
+        h1 {
+            color: red;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1 id="H1Distinto">
+        Hola mundo en H1
+    </h1>
+    <h1 style="color: coral;font-size: 70px;">
+        Hola mundo en H1
+    </h1>
+    <h1>
+        Hola mundo en H1
+    </h1>
+    <h1>
+        Hola mundo en H1
+    </h1>
+
+    <p>
+        <b>
+            Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola
+            mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo Hola mundo
+        </b>
+    </p>
+    <p>
+        esto esta normal
+    </p>
+    <div id="ImagenContenedor">
+        <img id="imagen"
+            src="https://ca-times.brightspotcdn.com/dims4/default/796e6c9/2147483647/strip/true/crop/1970x1108+39+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F12%2Fa5%2F79e097ccf62312d18a025f22ce48%2Fhoyla-recuento-11-cosas-aman-gatos-top-001"
+            alt="No se encontro el gato" />
+    </div>
+
+    <br />
+    <input type="range">
+
+    <br />
+    <input type="text" placeholder="Nombre del usuario" value="hola" id="textoNombreUsuario">
+    <br />
+    <br />
+    <input type="email" placeholder="email@test.com" class="inputsEntrada" id="inputEmail">
+    <br />
+    <br />
+    <input type="password" placeholder="Contra" class="inputsEntrada" id="inputContra">
+    <input type="button" title="click me!" value="Continuar">
+</body>
+
+</html>

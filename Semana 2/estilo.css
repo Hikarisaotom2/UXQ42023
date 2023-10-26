@@ -1,0 +1,53 @@
+/* 
+Existen tres maneras de agregar diseño a nuestros elementos de HTML: 
+1)Usando clases : Idealmente para agrupar etiquetas con un comportamiento similar
+2) etiqueta: Para que todas las etiquetas de un tipo tengan el mismo estilo
+3) id: Idealmente para mostrar agregar diseño a un elemento en especifico. 
+ */
+
+/* Definir estilo para una clase: .nombreClase:{}
+
+    Definir estilo para una etiqueta: nombreEtiqueta:{}
+
+     Definir estilo para un id:#nombredelid{} */
+
+#textoNombreUsuario{
+    width: 100%;
+    font-size: x-large;
+    color: crimson;
+}
+
+.inputsEntrada{
+    width: 100%;
+    font-size:xx-large;
+    color: green;
+    border-color: chartreuse;
+    border-radius: 20%;
+}
+
+h1{
+    font-size:medium;
+    color: blue;
+}
+
+p{
+    font-size:medium;
+    color:rgba(150, 212, 122, 0.667);
+}
+
+#H1Distinto{
+    color:aquamarine;
+}
+
+#ImagenContenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    height: 300px;
+}
+
+#imagen {
+    width: 20%; 
+    height: auto; 
+}

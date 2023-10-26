@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+
+    <button onclick="test3('hola')" >test</button>
+    <script>
+      console.log("Hola");
+      function Test(){
+          console.log("CLICK!!!");
+      }
+      // Arrow function / funciones anonimas / funciones lambda 
+      const test3 = (parametro1) => {
+        console.log("Mi parametro fue", parametro1);
+      }     
+      
+      let miObjeto = {
+        nombre:'Claudia',
+        apellido:'Cortes',
+        frutasFav:['Sandia','Mango'],
+      };
+      
+      console.log(miObjeto);
+      miObjeto.apellido = 7.9;
+      miObjeto.AtributoNuevo = 'Hola, soy nuevp'
+      miObjeto.AtributoNuevo = {
+        apellido:'Cortes',
+        frutasFav:['Sandia','Mango'],
+      }
+      console.log(miObjeto);
+    </script>
+  </body>
+</html>
