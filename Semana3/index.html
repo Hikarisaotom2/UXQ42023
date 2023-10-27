@@ -8,15 +8,20 @@
   </head>
   <body>
     <div class="mb-3">
-      <label for="exampleFormControlInput1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+      <label for="newField" class="form-label">Nuevo campo</label>
+      <input type="text" class="form-control" id="newField" placeholder="Ingrese un nuevo campo">
     </div>
     <div class="mb-3">
-      <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      <label for="valueInput" class="form-label">value Input</label>
+      <input type="text" class="form-control" id="valueInput" placeholder="Ingrese un valor para el atr">
     </div>
-
-    <button onclick="test3('hola')" >test</button>
+    <div class="mb-3">
+      <label for="textoFinal" class="form-label">Example textarea</label>
+      <textarea class="form-control" id="textoFinal" rows="3"></textarea>
+    </div>
+    
+    <button onclick="AgregarAtr()" >test</button>
+    <span id="labelError" class="form-label"> </span>
     <script>
       console.log("Hola");
       function Test(){
@@ -33,14 +38,28 @@
         frutasFav:['Sandia','Mango'],
       };
       
-      console.log(miObjeto);
-      miObjeto.apellido = 7.9;
-      miObjeto.AtributoNuevo = 'Hola, soy nuevp'
-      miObjeto.AtributoNuevo = {
-        apellido:'Cortes',
-        frutasFav:['Sandia','Mango'],
+      const AgregarAtr =  () =>{
+        let nuevoAtr=document.getElementById('');
+        let nuevoValor=document.getElementById('valueInput');
+        let textAreaPrueba=document.getElementById('textoFinal');
+        document.getElementById('labelError').value="";
+        // == != 
+        //=== !==
+        // console.log("Elemento normal ", nuevoAtr);
+        // console.log("Negacion ", !nuevoAtr);
+        // console.log("Doble negacion ",!!nuevoAtr);
+        if(nuevoAtr&&nuevoValor&&textAreaPrueba){ 
+          miObjeto[nuevoAtr.value] = nuevoValor.value;
+          textAreaPrueba.value = miObjeto.apellido;
+          console.log(miObjeto);
+        }else{
+           document.getElementById('labelError').textContent= "Ha ocurrido un error :(";
+          alert("Valor no valido!");
+        }
+        
       }
-      console.log(miObjeto);
+
+      //   
     </script>
   </body>
 </html>
