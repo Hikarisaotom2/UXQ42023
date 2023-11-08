@@ -1,10 +1,11 @@
 import React from 'react';
 
-const Texto = () =>{
+const Texto = (props) =>{
 return (<div>
     <h1>
-        hola
+        {props.textoMostrar}
     </h1>
+ <button onClick={props.funcionEjecutar}> LIMPIAR</button>
 </div>)
 }
 

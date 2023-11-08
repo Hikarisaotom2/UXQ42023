@@ -1,11 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import Texto from './texto';
 
 const Lista = () =>{
     const [texto, setTexto] = useState("Hola");
     const [arreglo, setArreglo] = useState(["Manzana","Uva"]);
-    const multiple= ()=>{
 
+    /*
+    1) ejecutar el efecto en cada render de la pantalla 
+    2) ejecutandolo en el primer render de la pagina/componente
+    3) Observando un elemento 
+    */
+
+   //1) ejecutar el efecto en cada render de la pantalla 
+    // useEffect(() => {
+    //     console.log("render del useeffect detectado");
+    // });
+    
+    //2) ejecutandolo en el primer render de la pagina/componente
+    useEffect(() => {
+        console.log("Primer render");
+    },[]);
+
+    //3) Observando un elemento 
+        useEffect(() => {
+            console.log("El arreglo cambio");
+        },[arreglo]);
+
+    const multiple= ()=>{
       if(texto){
             if(texto==="adios"){
                 return <p>Que le vaya bien</p>
@@ -16,6 +37,12 @@ const Lista = () =>{
             return <p>No hay nada que mostrar</p>
         }
     }
+
+    const botonClickeado = ()=>{
+        // const nuevoArreglo= arreglo
+        // nuevoArreglo.push(texto);
+        setArreglo([...arreglo,texto]);
+    }
     return(
     <div>
         <h1>Ingrese el texto</h1>
@@ -24,18 +51,19 @@ const Lista = () =>{
             }}/>
             
             <p>{texto}</p>
-        <button >click me</button>
+        <button onClick={botonClickeado}>Agregar fruta</button>
             {/* {
                texto&&<Texto/>
             } */}
 
-            { texto ? <Texto/>  :<p>No hay nada que mostrar</p> }
+            { texto ? <Texto textoMostrar={texto} funcionEjecutar={()=>{setTexto("")}}/>  :<p>No hay nada que mostrar</p> }
+            { texto ? <Texto textoMostrar={texto} funcionEjecutar={()=>{setTexto("Ya no esta limpio")}}/>  :<p>No hay nada que mostrar</p> }
             {
                 multiple()
             }
             {
                  arreglo.map(item =>{
-                    return <p>{item}</p>
+                    return <p><button onClick={()=>{setTexto(item)}}>{item}</button></p>
                 })
                 
             }
