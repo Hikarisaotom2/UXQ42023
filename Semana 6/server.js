@@ -15,12 +15,28 @@ console.log('Esta linea esta despues del .listen');
 //SET -?Agregar informacion
 //PUT/UPDATE -> Update
 //DELETE -> BORRAR INFORMACION
-            // request , response
-app.get('/',(req,res)=>{
-    console.log('Recibi una peticion');
-    res.send('Hola desde el servidor');
-} )
+
+
 // app.get('/', function (req, res) {
 //   res.send('Hello World')
 // })
+            // request , response
+
+/*
+1) procesar/ aceptar la solicitud 
+2) cuerpo ....
+3) respuesta */
+
+/* /CrearUsuarioNuevo
+*/
+
+//Endpoint
+                // req ->request
+                //res -> response 
+app.get('/hola',(req,res)=>{
+    console.log('Recibi una peticion');
+    res.status(200).send("Hola desde mi server :)");
+    //res.send('Hola desde el servidor');
+} )
+
 
