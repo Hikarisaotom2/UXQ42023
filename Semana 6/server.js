@@ -4,9 +4,36 @@ const express = require('express')
 //Importar otras librerias
 const path = require('path'); 
 const bodyParser = require('body-parser');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
+const uri = "mongodb+srv://admin2:12345HolaMundo@cluster0.hkay5rx.mongodb.net/?retryWrites=true&w=majority";
 //Init express
 const app = express()
+
+//Crear coneccipn con la base de datos de mongo 
+const client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
+  });
+
+  
+  async function run() {
+    try {
+      // Connect the client to the server	(optional starting in v4.7)
+      await client.connect();
+      // Send a ping to confirm a successful connection
+      await client.db("admin").command({ ping: 1 });
+      console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    } finally {
+      // Ensures that the client will close when you finish/error
+      await client.close();
+    }
+  }
+
+  run().catch(console.dir);
 
 //Definir el parser 
 var urlEncodeParser= bodyParser.urlencoded({extended:true});
@@ -23,38 +50,11 @@ app.listen(port,()=>{
 
 console.log('Esta linea esta despues del .listen');
 //Callback
-//GET ->obtener informacion 
-//SET -?Agregar informacion
-//PUT/UPDATE -> Update
-//DELETE -> BORRAR INFORMACION
-
-
-// app.get('/', function (req, res) {
-//   res.send('Hello World')
-// })
-            // request , response
-
-/*
-1) procesar/ aceptar la solicitud 
-2) cuerpo ....
-3) respuesta */
-
-/* /CrearUsuarioNuevo
-*/
-
 //Endpoint
-                // req ->request
-                //res -> response 
 app.get('/hola',(req,res)=>{
     console.log('Recibi una peticion');
     let calculo = 0;
     res.status(200).send("Hola desde mi server :)");
-    // if(calculo===0){
-    //     res.status(404).send('error');
-    // }else{
-    //     res.status(200).send("Hola desde mi server :)");
-    // }
-    //res.send('Hola desde el servidor');
 } )
 
 app.get('/getInfo',(req,res)=>{
@@ -67,9 +67,39 @@ app.get('/getInfo',(req,res)=>{
 } )
 
 
-app.put('/MiPrimerPut',(req,res)=>{
-    console.log('Recibi una peticion - put');
-    res.status(200).send("Se deberia ejecutar un update por el put")
+app.put('/updateUser',async (req,res)=>{
+  try {
+    const client = new MongoClient(uri);
+    const database = client.db("claseUX");
+    const usuarios = database.collection("usuarios");
+    // Crear el filtro para la informacion
+    const filter = { correo: "clau_cortes@unitec.edu" };
+
+    /* Upsert en true significa que si el documento no existe lo crea*/
+    const options = { upsert: true };
+
+    // Data con la que actualizaremos el documento.
+    const updateDoc = {
+      $set: {
+        correo: "clau_cortes@unitec.edu",
+        nuevoCampo: `el cuerpo del documento cambio completamente`
+      },
+    };
+    // Actualizar el primer documento que haga match con el filtro 
+    const result = await usuarios.updateOne(filter, updateDoc, options);
+    
+    // Print the number of matching and modified documents
+    console.log(
+      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
+    );
+    res.status(200).send("Se actualizo la informacion correctamente");
+  }catch (error){
+    res.status(500).send("No se pudo actualizar la información")
+  } finally {
+    // Close the connection after the operation completes
+    await client.close();
+  }
+   
 } )
 
 
@@ -78,22 +108,34 @@ app.delete('/deleteUser',(req,res)=>{
     res.status(200).send("<p>se elimino el usuario<p>")
 } )
 
-app.post('/createUser',(req,res)=>{
+app.post('/createUser',async (req,res)=>{
     console.log('Recibi una peticion - post');
-    //.....
-    //sendEmail()
-    console.log("hola");
-    res.status(200).send("Se creo el usuario exitosamente")
+    try {
+      const client = new MongoClient(uri);
+      // Conectar con  a la base de datos, claseUX, si la base de datos existe nos conectamos y la usamos, sino, mongo crea la base de datos.
+      const database = client.db("claseUX");
+      const usuarios = database.collection("usuarios");
+    // Documento a insertar 
+      const doc = req.body;
+      //insertar el documento en la coleccion 
+      const result = await usuarios.insertOne(doc);
+      console.log(`El resultado fue:  ${result}`);
+      console.log(`El id del usuario que se creo es : ${result.insertedId}`);
+      res.status(200).send("El usuario se creo exitosamente")
+    }catch(error){
+      res.status(500).send("No se creo el usuario, algo salio mal")
+    } finally {
+      await client.close();
+    }
+    
 } )
-
-app.get('/getFile',(req,res)=>{
-    /* 1) parametros 
-       2) usando el body
-    */
+    //Request , response
+app.get('/getFile/:id',(req,res)=>{
     console.log('Recibi una peticion - REGRESAR HTML');
+    console.log('El parametro que venia en la ruta  es ',  req.params.id);
     console.log('El parametro que venia en el body es ',  req.body.mensaje);
     console.log('El parametro que venia en el body es ',  req.body.correo);
-
+    console.log('El parametro que venia en el body es ',  req.body.id);
     res.status(200).sendFile(path.join(__dirname+"/info.html"));
 } )
 
