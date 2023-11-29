@@ -4,7 +4,7 @@ const express = require('express')
 //Importar otras librerias
 const path = require('path'); 
 const bodyParser = require('body-parser');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 const uri = "mongodb+srv://admin2:12345HolaMundo@cluster0.hkay5rx.mongodb.net/?retryWrites=true&w=majority";
 //Init express
@@ -57,15 +57,68 @@ app.get('/hola',(req,res)=>{
     res.status(200).send("Hola desde mi server :)");
 } )
 
-app.get('/getInfo',(req,res)=>{
-    console.log('Recibi una peticion - get #2');
+app.get('/getInfo',async (req,res)=>{
+  try {
+    const client = new MongoClient(uri);
+ 
+    const database = client.db("claseUX");
+    const usuarios = database.collection("usuarios");
+
+    const query = {correo: "clau_cortes@unitec.edu"  };
+    
+    const options = {
+      // Sort returned documents in ascending order by title (A->Z)
+      sort: { correo: 1 },
+      // Include only the `title` and `imdb` fields in each returned document
+      projection: { _id: 0, correo: 1,nombre:1, usuario:1, campoquenoexisteprueba:1},
+    };
+    // Execute query 
+    const cursor = usuarios.find(query, options);
+    // Print a message if no documents were found
+    if ((await usuarios.countDocuments(query)) === 0) {
+      console.log("No documents found!");
+      res.status(200).send("No se encontraron registros");
+    }
+    // Print returned documents
+    let arr = []
+    for await (const doc of cursor) {
+      console.dir(doc);
+      arr.push(doc)
+    }
     res.status(200).send({
-        nombre:"Claudia",
-        apellido:"Cortes",
-        carrera:"Ing.Sistemas",
+      documentos: arr,
     });
+  }catch (error){
+    res.status(500).send("No se pudo ejecutar la query....");
+  } finally {
+    await client.close();
+  }
+
 } )
 
+app.delete('/deleteUser',async (req,res)=>{
+  try {
+    const client = new MongoClient(uri);
+    const database = client.db("claseUX");
+    const usuarios = database.collection("usuarios");
+    const query = {correo: "clau_cortes@unitec.edu"};
+    const result = await usuarios.deleteOne(query);
+
+    if (result.deletedCount === 1) {
+      console.log("Successfully deleted one document.");
+      res.status(200).send("Se borro algo exitosamente");
+    } else {
+      console.log("No documents matched the query. Deleted 0 documents.");
+      res.status(200).send("Ningun documento hizo match con la busqueda, no se elimino nada");
+    }
+  }catch(error){
+    res.status(500).send("Algo salio mal, no pudimos borrar el documento");
+  } finally {
+    // Close the connection after the operation completes
+    await client.close();
+  }
+  
+} )
 
 app.put('/updateUser',async (req,res)=>{
   try {
@@ -103,11 +156,6 @@ app.put('/updateUser',async (req,res)=>{
 } )
 
 
-app.delete('/deleteUser',(req,res)=>{
-    console.log('Recibi una peticion - delete');
-    res.status(200).send("<p>se elimino el usuario<p>")
-} )
-
 app.post('/createUser',async (req,res)=>{
     console.log('Recibi una peticion - post');
     try {
@@ -129,6 +177,7 @@ app.post('/createUser',async (req,res)=>{
     }
     
 } )
+
     //Request , response
 app.get('/getFile/:id',(req,res)=>{
     console.log('Recibi una peticion - REGRESAR HTML');
