@@ -101,7 +101,7 @@ app.delete('/deleteUser',async (req,res)=>{
     const client = new MongoClient(uri);
     const database = client.db("claseUX");
     const usuarios = database.collection("usuarios");
-    const query = {correo: "clau_cortes@unitec.edu"};
+    const query = {_id: new ObjectId('65652ea50511bf5c83f185cf')};
     const result = await usuarios.deleteOne(query);
 
     if (result.deletedCount === 1) {
@@ -187,4 +187,3 @@ app.get('/getFile/:id',(req,res)=>{
     console.log('El parametro que venia en el body es ',  req.body.id);
     res.status(200).sendFile(path.join(__dirname+"/info.html"));
 } )
-
