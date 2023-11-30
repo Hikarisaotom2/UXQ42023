@@ -5,6 +5,7 @@ const express = require('express')
 const path = require('path'); 
 const bodyParser = require('body-parser');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const cors = require('cors');
 
 const uri = "mongodb+srv://admin2:12345HolaMundo@cluster0.hkay5rx.mongodb.net/?retryWrites=true&w=majority";
 //Init express
@@ -38,10 +39,11 @@ const client = new MongoClient(uri, {
 //Definir el parser 
 var urlEncodeParser= bodyParser.urlencoded({extended:true});
 //Definir el puerto
-let port = 3000;
+let port = 3001;
 
 //Utilizar / set el parser
 app.use(urlEncodeParser);
+app.use(cors()) 
 
 //Levantar el servidor
 app.listen(port,()=>{

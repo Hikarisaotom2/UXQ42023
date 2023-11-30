@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import Texto from './texto';
+import axios from 'axios';
 
 const Lista = () =>{
     const [texto, setTexto] = useState("Hola");
@@ -43,6 +44,16 @@ const Lista = () =>{
         // nuevoArreglo.push(texto);
         setArreglo([...arreglo,texto]);
     }
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+          const response = await axios.delete('http://localhost:3001/deleteUser',{}); 
+          console.log('Respuesta del servidor:', response);
+          console.log('Respuesta del servidor:', response.data);
+        } catch (error) {
+          console.error('Error al enviar la solicitud POST:', error);
+        }
+      };
     return(
     <div>
         <h1>Ingrese el texto</h1>
@@ -51,6 +62,9 @@ const Lista = () =>{
             }}/>
             
             <p>{texto}</p>
+            
+            <button onClick={handleSubmit}>DELETE USER FROM DB</button>
+
         <button onClick={botonClickeado}>Agregar fruta</button>
             {/* {
                texto&&<Texto/>
