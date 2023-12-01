@@ -66,7 +66,7 @@ app.get('/getInfo',async (req,res)=>{
     const database = client.db("claseUX");
     const usuarios = database.collection("usuarios");
 
-    const query = {correo: "clau_cortes@unitec.edu"  };
+    const query = {nombre: "claudia"  };
     
     const options = {
       // Sort returned documents in ascending order by title (A->Z)
@@ -128,7 +128,7 @@ app.put('/updateUser',async (req,res)=>{
     const database = client.db("claseUX");
     const usuarios = database.collection("usuarios");
     // Crear el filtro para la informacion
-    const filter = { correo: "clau_cortes@unitec.edu" };
+    const filter = { nombre: "claudia" };
 
     /* Upsert en true significa que si el documento no existe lo crea*/
     const options = { upsert: true };
@@ -136,8 +136,9 @@ app.put('/updateUser',async (req,res)=>{
     // Data con la que actualizaremos el documento.
     const updateDoc = {
       $set: {
-        correo: "clau_cortes@unitec.edu",
-        nuevoCampo: `el cuerpo del documento cambio completamente`
+        // correo: "clau_cortes@unitec.edu",
+        // nuevoCampo: `el cuerpo del documento cambio completamente`
+        ...req.body,
       },
     };
     // Actualizar el primer documento que haga match con el filtro 
