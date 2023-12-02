@@ -23,7 +23,7 @@ const Formulario = () => {
             });
             console.log('Respuesta del update usuario', response);
         setMensaje(response.data)
-            await getUsuarios();
+          //  await getUsuarios();
         } catch (error) {
             console.log('Algo salio mal');
             setMensaje(error)
@@ -31,7 +31,8 @@ const Formulario = () => {
     } 
     const getUsuarios = async () =>{
         try{
-            const response = await axios.get('http://localhost:3001/getInfo');
+            const url = process.env.REACT_APP_API_URL
+            const response = await axios.get(url+'/getInfo');
             setUsuarios(response.data.documentos);
             console.log('El response del get es ', response.data.documentos);
         }catch(error){
@@ -45,14 +46,17 @@ const Formulario = () => {
                 apellido:apellido,
                 correo: correo
             }
-            const response = await axios.post('http://localhost:3001/createUser',usuario,{
+            const url = process.env.REACT_APP_API_URL;
+            const ruta = process.env.REACT_APP_CREATE_USER;
+            // console.log(url+ruta);
+            const response = await axios.post(url+ruta,usuario,{
                 headers:{
                     "Content-Type":'application/x-www-form-urlencoded'
                 }
             });
             console.log('Respuesta del usuario', response);
             setMensaje(response.data)
-            await getUsuarios();
+            // await getUsuarios();
         } catch (error) {
             console.log('Algo salio mal');
             setMensaje(error)
@@ -79,6 +83,12 @@ const Formulario = () => {
             <p>{correo}</p>
             <button onClick={crearUsuario}> Crear Usuario</button>
             <button onClick={updateInformation}> Actualizar informacion</button>
+            <button onClick={()=>{
+                  const url = process.env.REACT_APP_API_URL;
+                  const ruta = process.env.REACT_APP_CREATE_USER;
+                console.log(url)
+                console.log(ruta);
+                }}> MOSTRAR ENV </button>
             {mensaje && <p>{mensaje}</p>}
             {
                 usuarios.map((item)=>{
