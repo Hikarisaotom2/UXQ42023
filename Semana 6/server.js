@@ -6,6 +6,18 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
+const { initializeApp } =require("firebase/app");
+const  { getAuth,createUserWithEmailAndPassword  } = require( "firebase/auth");
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC6nEe2OZ-r0OnXAzUZDtN-Ft7cn_J5l-Q",
+  authDomain: "mibackend-uxq22023.firebaseapp.com",
+  projectId: "mibackend-uxq22023",
+  storageBucket: "mibackend-uxq22023.appspot.com",
+  messagingSenderId: "588483010547",
+  appId: "1:588483010547:web:cde029c31abf28e1783c86",
+  measurementId: "G-G8G80KHK1C"
+};
 
 const uri = "mongodb+srv://admin2:12345HolaMundo@cluster0.hkay5rx.mongodb.net/?retryWrites=true&w=majority";
 //Init express
@@ -42,6 +54,7 @@ var urlEncodeParser= bodyParser.urlencoded({extended:true});
 let port = 3001;
 
 //Utilizar / set el parser
+const firebaseApp = initializeApp(firebaseConfig);
 app.use(urlEncodeParser);
 app.use(cors()) 
 
@@ -75,12 +88,13 @@ app.get('/getInfo',async (req,res)=>{
       projection: { _id: 0, correo: 1,nombre:1, usuario:1, campoquenoexisteprueba:1},
     };
     // Execute query 
-    const cursor = usuarios.find(query, options);
-    // Print a message if no documents were found
-    if ((await usuarios.countDocuments(query)) === 0) {
-      console.log("No documents found!");
-      res.status(200).send("No se encontraron registros");
-    }
+    //const cursor = usuarios.find(query, options);
+    const cursor = usuarios.find({},options);
+    // // Print a message if no documents were found
+    // if ((await usuarios.countDocuments(query)) === 0) {
+    //   console.log("No documents found!");
+    //   res.status(200).send("No se encontraron registros");
+    // }
     // Print returned documents
     let arr = []
     for await (const doc of cursor) {
@@ -190,3 +204,28 @@ app.get('/getFile/:id',(req,res)=>{
     console.log('El parametro que venia en el body es ',  req.body.id);
     res.status(200).sendFile(path.join(__dirname+"/info.html"));
 } )
+
+//post
+app.post("/createUserWithEmailAndPassword",  (req, res) => {
+    const auth = getAuth(firebaseApp);
+    const email = req.body.email;
+    const password = req.body.password;
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((resp) => {
+      res.status(200).send({
+        msg: "Esta es la respuesta de firebase", 
+        data: resp,
+      })
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      res.status(500).send({
+        msg: "Error al crear el usuario", 
+        errorCode: errorCode,
+        errorMsg: errorMessage
+      })
+    
+    });
+
+})
