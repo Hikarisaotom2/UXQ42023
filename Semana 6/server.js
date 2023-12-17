@@ -264,13 +264,19 @@ app.post("/logIn",  (req, res) => {
   }
 })
 
-app.post("/logIn",  (req, res) => {
+app.post("/logOut",  (req, res) => {
   try{
     const auth = getAuth();
     signOut(auth).then(() => {
-     
+      res.status(200).send({
+        msg: "Sesión cerrada"
+      })
     }).catch((error) => {
-      // An error happened.
+      res.status(500).send({
+        msg: "Error al hacer log in", 
+        errorCode: errorCode,
+        errorMsg: errorMessage
+      })
     });
   }catch(error){
 
