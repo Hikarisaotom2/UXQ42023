@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const { initializeApp } =require("firebase/app");
-const  { getAuth,createUserWithEmailAndPassword  } = require( "firebase/auth");
+const  { getAuth,createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut  } = require( "firebase/auth");
 
 const firebaseConfig = {
   apiKey: "AIzaSyC6nEe2OZ-r0OnXAzUZDtN-Ft7cn_J5l-Q",
@@ -229,3 +229,52 @@ app.post("/createUserWithEmailAndPassword",  (req, res) => {
     });
 
 })
+
+
+app.post("/logIn",  (req, res) => {
+  try{
+    const auth = getAuth();
+    const email = req.body.email;
+    const password = req.body.password;
+    signInWithEmailAndPassword(auth, email, password)
+    .then((resp) => {
+      res.status(200).send({
+        msg: "Log in exitoso! :) ", 
+        data: resp,
+      })
+    
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      res.status(500).send({
+        msg: "Error al hacer log in", 
+        errorCode: errorCode,
+        errorMsg: errorMessage
+      })
+    });
+  }catch(error){
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    res.status(500).send({
+      msg: "Error al hacer log in", 
+      errorCode: errorCode,
+      errorMsg: errorMessage
+    })
+  }
+})
+
+app.post("/logIn",  (req, res) => {
+  try{
+    const auth = getAuth();
+    signOut(auth).then(() => {
+     
+    }).catch((error) => {
+      // An error happened.
+    });
+  }catch(error){
+
+  }
+})
+
+
